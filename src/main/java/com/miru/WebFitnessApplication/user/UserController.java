@@ -1,20 +1,21 @@
 package com.miru.WebFitnessApplication.user;
-
+import com.miru.WebFitnessApplication.calculator.CalculatorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/user")
 public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private CalculatorService calculatorService;
 
     @GetMapping("/getAll")
     public List<User> list(){
@@ -22,9 +23,24 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public String add(@RequestBody User student){
-        userService.save(student);
-        return "New User Added";
+    public ResponseEntity<Map<String, Object>> add(@RequestBody User user) {
+        try {
+            userService.save(user);
+            Integer bmr = calculatorService.calculateBMR(user);
+            Double bmi = calculatorService.calculateBMI(user);
+            int[] macronutrients = calculatorService.calculateMacronutrients(user);
+
+            Map<String, Object> result = new HashMap<>();
+            result.put("bmi", bmi);
+            result.put("bmr", bmr);
+            result.put("protein", macronutrients[0]);
+            result.put("carbs", macronutrients[1]);
+            result.put("fat", macronutrients[2]);
+
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonMap("error", "Failed to add user: " + e.getMessage()));
+        }
     }
 
     @GetMapping("/{id}")
