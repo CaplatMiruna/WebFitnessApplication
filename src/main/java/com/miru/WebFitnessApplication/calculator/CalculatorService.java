@@ -20,10 +20,10 @@ public class CalculatorService {
         }
         double b;
         if ("F".equals(user.getGender())) {
-            b = 447.593 + ((9.247 * user.getWeight()) + (3.098 * user.getHeight()) - (4.330 * user.getAge()));
+            b = 655 + (9.6 * user.getWeight()) + (1.8 * user.getHeight()) - (4.7 * user.getAge());
         } else if ("M".equals(user.getGender())) {
-            b = 88.362 + ((13.387 * user.getWeight()) + (4.799 * user.getHeight()) - (5.677 * user.getAge()));
-        } else {
+            b = 66 + (13.7 * user.getWeight()) + (5 * user.getHeight()) - (6.8 * user.getAge());
+        }  else {
             throw new IllegalArgumentException("Invalid gender");
         }
 
@@ -47,9 +47,10 @@ public class CalculatorService {
 
         switch (user.getGoal()) {
             case 1: // Menținere
+                bmr *= 1.1;
                 break;
             case 2: // Creștere în masă musculară
-                bmr *= 1.1;
+                bmr *= 1.2;
                 break;
             case 3: // Pierdere in greutate
                 bmr *= 0.9;

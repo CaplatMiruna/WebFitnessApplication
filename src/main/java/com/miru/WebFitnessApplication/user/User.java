@@ -25,15 +25,20 @@ public class User {
     public User() {
     }
 
-    public User(Integer id, Integer activity, Integer goal, String gender, Double height, Double weight, Integer age, String name) {
+    public User(Integer id, String name, Integer age, Double weight, Double height, String gender, Integer activity, Integer goal) {
         this.id = id;
+        this.name = name;
+        this.age = age;
+        this.weight = weight;
+        this.height = height;
+        this.gender = gender;
         this.activity = activity;
         this.goal = goal;
-        this.gender = gender;
-        this.height = height;
-        this.weight = weight;
-        this.age = age;
-        this.name = name;
+
+
+
+
+
     }
 
     public Integer getId() {
